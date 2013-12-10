@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!--
+
+	Open Financial Exchange Specification (c)1996-2003 ("Specification") by all of its publishers: 
+	CheckFree Corp., Intuit Inc., and Microsoft Corporation. All rights reserved. 
+
+	Revision History:
+
+	Version	Date    	Editor Email Addr    		Short Description
+
+	p18	2002-02-11  	altenburgd@businesslogic.com	Initial revision
+        p21     2002-03-17      altenburgd@businesslogic.com    Changed elementFormDefault to "unqualified"
+                                                                Changed namespace to "http://ofx.net/types/2003/04"
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  xmlns:ofx="http://ofx.net/types/2003/04"
+  targetNamespace="http://ofx.net/types/2003/04">
+  <xsd:include schemaLocation = "OFX_Common.xsd" />
+
+  <xsd:complexType name="BorrowerAddress">
+    <xsd:annotation>
+      <xsd:documentation>
+        The OFX element "BORROWERADDR" is of type "BorrowerAddress"
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="BORROWERNAME" type="ofx:GenericNameType" />
+
+      <xsd:element name="ADDR1" type="ofx:AddressType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="ADDR2" type="ofx:AddressType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="ADDR3" type="ofx:AddressType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="CITY" type="ofx:AddressType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:element name="STATE" type="ofx:StateType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:element name="POSTALCODE" type="ofx:ZipType"
+      minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="LenderAddress">
+    <xsd:annotation>
+      <xsd:documentation>
+        The OFX element "LENDERADDR" is of type "LenderAddress"
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="LENDERNAME" type="ofx:GenericNameType" />
+
+      <xsd:element name="ADDR1" type="ofx:AddressType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="ADDR2" type="ofx:AddressType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="ADDR3" type="ofx:AddressType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="CITY" type="ofx:AddressType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:element name="STATE" type="ofx:StateType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:element name="POSTALCODE" type="ofx:ZipType"
+      minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Tax1098_V100">
+    <xsd:annotation>
+      <xsd:documentation>
+        The OFX element "TAX1098_V100" is of type "Tax1098_V100"
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="SRVRTID" type="ofx:ServerIdType" />
+
+      <xsd:element name="TAXYEAR" type="ofx:YearType" />
+
+      <xsd:element name="MORTGAGEINTEREST" type="ofx:AmountType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="POINTS" type="ofx:AmountType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:element name="OVERPAIDREFUND" type="ofx:AmountType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="OTHERLOANINFO" type="ofx:GenericDescriptionType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="LENDERADDR" type="ofx:LenderAddress"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="LENDERID" type="ofx:GenericDescriptionType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="BORROWERADDR" type="ofx:BorrowerAddress"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="BORROWERID" type="ofx:GenericDescriptionType"
+      minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+</xsd:schema>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!--
+
+	Open Financial Exchange Specification (c)1996-2003 ("Specification") by all of its publishers: 
+	CheckFree Corp., Intuit Inc., and Microsoft Corporation. All rights reserved. 
+
+	Revision History:
+
+	Version	Date    	Editor Email Addr    		Short Description
+
+	p18	2002-02-11  	altenburgd@businesslogic.com	Initial revision
+        p21     2002-03-17      altenburgd@businesslogic.com    Changed elementFormDefault to "unqualified"
+                                                                Changed namespace to "http://ofx.net/types/2003/04"
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  xmlns:ofx="http://ofx.net/types/2003/04"
+  targetNamespace="http://ofx.net/types/2003/04">
+
+  
+  <xsd:include schemaLocation = "OFX_Tax1098.xsd" />
+
+  <xsd:complexType name="Tax1098Request">
+    <xsd:annotation>
+      <xsd:documentation>
+        The OFX element "TAX1098RQ" is of type "Tax1098Request"
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="ACCTNUM" type="ofx:AccountIdType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="SSN" type="ofx:GenericNameType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:element name="TAXYEAR" type="ofx:YearType" minOccurs="0"
+      maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Tax1098Response">
+    <xsd:annotation>
+      <xsd:documentation>
+        The OFX element "TAX1098RS" is of type "Tax1098Response"
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="ACCTNUM" type="ofx:AccountIdType"
+      minOccurs="0" maxOccurs="1" />
+
+      <xsd:element name="SSN" type="ofx:GenericNameType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+        <xsd:element name="TAX1098_V100" type="ofx:Tax1098_V100" />
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>
+

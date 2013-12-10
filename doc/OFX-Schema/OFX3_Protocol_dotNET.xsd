@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+	Open Financial Exchange Specification (c)1996-2003 ("Specification") by all of its publishers: 
+	CheckFree Corp., Intuit Inc., and Microsoft Corporation. All rights reserved. 
+
+	Revision History:
+
+	Version	Date    	Editor Email Addr    		Short Description
+	p1	2004-10-27  	gil_clark@intuit.com		Initial revision
+	p2  2004-11-8		gil_clark@intuit.com		Modified from OFX3_Protocol to better support
+													dotNET code generation tools.
+-->
+<xsd:schema targetNamespace="http://ofx.net/types/2003/04" xmlns:ofx="http://ofx.net/types/2003/04" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:include schemaLocation="OFX_Banking_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_BillPay_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_BillerDelivery_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_BillerDirectory_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_CreditCard_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Email_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Image_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_InterTransfer_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Investment_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Loan_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Profile_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_SecuritiesList_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Signon_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Signup_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Tax1098_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_Tax1099_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_TaxW2_Message_Wrappers.xsd"/>
+	<xsd:include schemaLocation="OFX_WireTransfer_Message_Wrappers.xsd"/>
+	<xsd:complexType name="OFXRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX request root element for the SOAP Body.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element name="SIGNONMSGSRQV1" type="ofx:SignonRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="SIGNUPMSGSRQV1" type="ofx:SignupRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="BANKMSGSRQV1" type="ofx:BankRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="CREDITCARDMSGSRQV1" type="ofx:CreditcardRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="INVSTMTMSGSRQV1" type="ofx:InvestmentStatementRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="INTERXFERMSGSRQV1" type="ofx:InterTransferRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="WIREXFERMSGSRQV1" type="ofx:WireTransferRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="BILLPAYMSGSRQV1" type="ofx:BillPayRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="EMAILMSGSRQV1" type="ofx:EmailRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="IMAGEMSGSRQV1" type="ofx:ImageRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="LOANMSGSRQV1" type="ofx:LoanRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="SECLISTMSGSRQV1" type="ofx:SecurityListRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="PRESDIRMSGSRQV1" type="ofx:PresentmentDirRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="PRESDLVMSGSRQV1" type="ofx:PresentmentDeliveryRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="PROFMSGSRQV1" type="ofx:ProfileRequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="TAX1098MSGSRQV1" type="ofx:Tax1098RequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="TAX1099MSGSRQV1" type="ofx:Tax1099RequestMessageSetV1" minOccurs="0"/>
+			<xsd:element name="TAXW2MSGSRQV1" type="ofx:TaxW2RequestMessageSetV1" minOccurs="0"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="OFXResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX response root element for the SOAP Body.
+        		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element name="SIGNONMSGSRSV1" type="ofx:SignonResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="SIGNUPMSGSRSV1" type="ofx:SignupResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="BANKMSGSRSV1" type="ofx:BankResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="CREDITCARDMSGSRSV1" type="ofx:CreditcardResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="INVSTMTMSGSRSV1" type="ofx:InvestmentStatementResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="INTERXFERMSGSRSV1" type="ofx:InterTransferResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="WIREXFERMSGSRSV1" type="ofx:WireTransferResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="BILLPAYMSGSRSV1" type="ofx:BillPayResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="EMAILMSGSRSV1" type="ofx:EmailResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="LOANMSGSRSV1" type="ofx:LoanResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="SECLISTMSGSRSV1" type="ofx:SecurityListResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="PRESDIRMSGSRSV1" type="ofx:PresentmentDirResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="PRESDLVMSGSRSV1" type="ofx:PresentmentDeliveryResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="PROFMSGSRSV1" type="ofx:ProfileResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="TAX1098MSGSRSV1" type="ofx:Tax1098ResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="TAX1099MSGSRSV1" type="ofx:Tax1099ResponseMessageSetV1" minOccurs="0"/>
+			<xsd:element name="TAXW2MSGSRSV1" type="ofx:TaxW2ResponseMessageSetV1" minOccurs="0"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:element name="OFXRequest" type="ofx:OFXRequestType"/>
+	<xsd:element name="OFXResponse" type="ofx:OFXResponseType"/>
+	<xsd:element name="SONRQ" type="ofx:SignonRequest"/>
+	<xsd:element name="SONRS" type="ofx:SignonResponse"/>
+	<xsd:complexType name="BankRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "BANKMSGSRQV1" is of type "BankRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="STMTTRNRQ" type="ofx:StatementTransactionRequest"/>
+					<xsd:element name="STMTENDTRNRQ" type="ofx:StatementEndTransactionRequest"/>
+					<xsd:element name="INTRATRNRQ" type="ofx:IntraTransactionRequest"/>
+					<xsd:element name="RECINTRATRNRQ" type="ofx:RecurringIntraTransactionRequest"/>
+					<xsd:element name="STPCHKTRNRQ" type="ofx:StopCheckTransactionRequest"/>
+					<xsd:element name="BANKMAILTRNRQ" type="ofx:BankMailTransactionRequest"/>
+					<xsd:element name="BANKMAILSYNCRQ" type="ofx:BankMailSyncRequest"/>
+					<xsd:element name="STPCHKSYNCRQ" type="ofx:StopCheckSyncRequest"/>
+					<xsd:element name="INTRASYNCRQ" type="ofx:IntraSyncRequest"/>
+					<xsd:element name="RECINTRASYNCRQ" type="ofx:RecurringIntraSyncRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="BankResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "BANKMSGSRSV1" is of type "BankResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="STMTTRNRS" type="ofx:StatementTransactionResponse"/>
+					<xsd:element name="STMTENDTRNRS" type="ofx:StatementEndTransactionResponse"/>
+					<xsd:element name="INTRATRNRS" type="ofx:IntraTransactionResponse"/>
+					<xsd:element name="RECINTRATRNRS" type="ofx:RecurringIntraTransactionResponse"/>
+					<xsd:element name="STPCHKTRNRS" type="ofx:StopCheckTransactionResponse"/>
+					<xsd:element name="BANKMAILTRNRS" type="ofx:BankMailTransactionResponse"/>
+					<xsd:element name="BANKMAILSYNCRS" type="ofx:BankMailSyncResponse"/>
+					<xsd:element name="STPCHKSYNCRS" type="ofx:StopCheckSyncResponse"/>
+					<xsd:element name="INTRASYNCRS" type="ofx:IntraSyncResponse"/>
+					<xsd:element name="RECINTRASYNCRS" type="ofx:RecurringIntraSyncResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+       <xsd:complexType name="ImageRequestMessageSetV1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The OFX element "IMAGEMSGSRQV1" is of type "ImageRequestMessageSetV1"
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexContent>
+            <xsd:extension base="ofx:AbstractRequestMessageSet">
+              <xsd:choice minOccurs="1" maxOccurs="unbounded">
+                <xsd:element name="IMAGETRNRQ" type="ofx:ImageTransactionRequest"/>
+              </xsd:choice>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="LoanRequestMessageSetV1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The OFX element "LOANMSGSRQV1" is of type "LoanRequestMessageSetV1"
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexContent>
+            <xsd:extension base="ofx:AbstractRequestMessageSet">
+              <xsd:choice minOccurs="1" maxOccurs="unbounded">
+                <xsd:element name="LOANSTMTTRNRQ" type="ofx:LoanStatementTransactionRequest"/>
+                <xsd:element name="AMRTSTMTTRNRQ" type="ofx:AmortizationTransactionRequest"/>
+                <xsd:element name="LOANSTMTENDTRNRQ" type="ofx:LoanStatementEndTransactionRequest"/>
+                <xsd:element name="LOANMAILTRNRQ" type="ofx:LoanMailTransactionRequest"/>
+                <xsd:element name="LOANMAILSYNCRQ" type="ofx:LoanMailSyncRequest"/>
+              </xsd:choice>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+        
+        <xsd:complexType name="LoanResponseMessageSetV1">
+          <xsd:annotation>
+            <xsd:documentation>
+              The OFX element "LOANMSGSRSV1" is of type "LoanResponseMessageSetV1"
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexContent>
+            <xsd:extension base="ofx:AbstractResponseMessageSet">
+              <xsd:choice minOccurs="1" maxOccurs="unbounded">
+                <xsd:element name="LOANSTMTTRNRS" type="ofx:LoanStatementTransactionResponse"/>
+                <xsd:element name="AMRTSTMTTRNRS" type="ofx:AmortizationTransactionResponse"/>
+                <xsd:element name="LOANSTMTENDTRNRS" type="ofx:LoanStatementEndTransactionResponse"/>
+                <xsd:element name="LOANMAILTRNRS" type="ofx:LoanMailTransactionResponse"/>
+                <xsd:element name="LOANMAILSYNCRS" type="ofx:LoanMailSyncResponse"/>
+              </xsd:choice>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+	<xsd:complexType name="BillPayRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "BILLPAYMSGSRQV1" is of type "BillPayRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence>
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="PAYEETRNRQ" type="ofx:PayeeTransactionRequest"/>
+						<xsd:element name="PAYEESYNCRQ" type="ofx:PayeeSyncRequest"/>
+					</xsd:choice>
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="PMTTRNRQ" type="ofx:PaymentTransactionRequest"/>
+						<xsd:element name="RECPMTTRNRQ" type="ofx:RecurringPaymentTransactionRequest"/>
+						<xsd:element name="PMTINQTRNRQ" type="ofx:PaymentInquiryTransactionRequest"/>
+						<xsd:element name="PMTMAILTRNRQ" type="ofx:PaymentMailTransactionRequest"/>
+						<xsd:element name="PMTSYNCRQ" type="ofx:PaymentSyncRequest"/>
+						<xsd:element name="RECPMTSYNCRQ" type="ofx:RecurringPaymentSyncRequest"/>
+						<xsd:element name="PMTMAILSYNCRQ" type="ofx:PaymentMailSyncRequest"/>
+					</xsd:choice>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="BillPayResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "BILLPAYMSGSRSV1" is of type "BillPayResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence>
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="PAYEETRNRS" type="ofx:PayeeTransactionResponse"/>
+						<xsd:element name="PAYEESYNCRS" type="ofx:PayeeSyncResponse"/>
+					</xsd:choice>
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="PMTTRNRS" type="ofx:PaymentTransactionResponse"/>
+						<xsd:element name="RECPMTTRNRS" type="ofx:RecurringPaymentTransactionResponse"/>
+						<xsd:element name="PMTINQTRNRS" type="ofx:PaymentInquiryTransactionResponse"/>
+						<xsd:element name="PMTMAILTRNRS" type="ofx:PaymentMailTransactionResponse"/>
+						<xsd:element name="PMTSYNCRS" type="ofx:PaymentSyncResponse"/>
+						<xsd:element name="RECPMTSYNCRS" type="ofx:RecurringPaymentSyncResponse"/>
+						<xsd:element name="PMTMAILSYNCRS" type="ofx:PaymentMailSyncResponse"/>
+					</xsd:choice>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PresentmentDeliveryRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PRESDLVMSGSRQV1" is of type "PresentmentDeliveryRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="PRESLISTTRNRQ" type="ofx:PresentmentListTransactionRequest"/>
+					<xsd:element name="PRESGRPACCTINFOTRNRQ" type="ofx:PresentmentGroupAccountInfoTransactionRequest"/>
+					<xsd:element name="PRESDETAILTRNRQ" type="ofx:PresentmentDetailTransactionRequest"/>
+					<xsd:element name="BILLTBLSTRUCTTRNRQ" type="ofx:BillTableStructureTransactionRequest"/>
+					<xsd:element name="PRESNOTIFYTRNRQ" type="ofx:PresentmentNotifyTransactionRequest"/>
+					<xsd:element name="BILLSTATUSMODTRNRQ" type="ofx:BillStatusModTransactionRequest"/>
+					<xsd:element name="PRESMAILSYNCRQ" type="ofx:PresentmentMailSyncRequest"/>
+					<xsd:element name="PRESMAILTRNRQ" type="ofx:PresentmentMailTransactionRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PresentmentDeliveryResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PRESDLVMSGSRSV1" is of type "PresentmentDeliveryResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="PRESLISTTRNRS" type="ofx:PresentmentListTransactionResponse"/>
+					<xsd:element name="PRESGRPACCTINFOTRNRS" type="ofx:PresentmentGroupAccountInfoTransactionResponse"/>
+					<xsd:element name="PRESDETAILTRNRS" type="ofx:PresentmentDetailTransactionResponse"/>
+					<xsd:element name="BILLTBLSTRUCTTRNRS" type="ofx:BillTableStructureTransactionResponse"/>
+					<xsd:element name="PRESNOTIFYTRNRS" type="ofx:PresentmentNotifyTransactionResponse"/>
+					<xsd:element name="BILLSTATUSMODTRNRS" type="ofx:BillStatusModTransactionResponse"/>
+					<xsd:element name="PRESMAILSYNCRS" type="ofx:PresentmentMailSyncResponse"/>
+					<xsd:element name="PRESMAILTRNRS" type="ofx:PresentmentMailTransactionResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="InvestmentStatementRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "INVSTMTMSGSRQV1" is of type "InvestmentStatementRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="INVSTMTTRNRQ" type="ofx:InvestmentStatementTransactionRequest"/>
+					<xsd:element name="INVMAILTRNRQ" type="ofx:InvestmentMailTransactionRequest"/>
+					<xsd:element name="INVMAILSYNCRQ" type="ofx:InvestmentMailSyncRequest"/>
+					<xsd:element name="INVSTMTENDRQ" type="ofx:InvestmentStatementEndRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="InvestmentStatementResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "INVSTMTMSGSRSV1" is of type "InvestmentStatementResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="INVSTMTTRNRS" type="ofx:InvestmentStatementTransactionResponse"/>
+					<xsd:element name="INVMAILTRNRS" type="ofx:InvestmentMailTransactionResponse"/>
+					<xsd:element name="INVMAILSYNCRS" type="ofx:InvestmentMailSyncResponse"/>
+					<xsd:element name="INVSTMTENDRS" type="ofx:InvestmentStatementEndResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CreditcardRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "CREDITCARDMSGSRQV1" is of type "CreditcardRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="CCSTMTTRNRQ" type="ofx:CreditCardStatementTransactionRequest"/>
+					<xsd:element name="CCSTMTENDTRNRQ" type="ofx:CreditCardStatementEndTransactionRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CreditcardResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "CREDITCARDMSGSRSV1" is of type "CreditcardResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="CCSTMTTRNRS" type="ofx:CreditCardStatementTransactionResponse"/>
+					<xsd:element name="CCSTMTENDTRNRS" type="ofx:CreditCardStatementEndTransactionResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EmailRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "EMAILMSGSRQV1" is of type "EmailRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="MAILTRNRQ" type="ofx:MailTransactionRequest"/>
+					<xsd:element name="MAILSYNCRQ" type="ofx:MailSyncRequest"/>
+					<xsd:element name="GETMIMETRNRQ" type="ofx:GetMimeTransactionRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EmailResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "EMAILMSGSRSV1" is of type "EmailResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="MAILTRNRS" type="ofx:MailTransactionResponse"/>
+					<xsd:element name="MAILSYNCRS" type="ofx:MailSyncResponse"/>
+					<xsd:element name="GETMIMETRNRS" type="ofx:GetMimeTransactionResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="InterTransferRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "INTERXFERMSGSRQV1" is of type "InterTransferRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="INTERTRNRQ" type="ofx:InterTransactionRequest"/>
+					<xsd:element name="RECINTERTRNRQ" type="ofx:RecurringInterTransactionRequest"/>
+					<xsd:element name="INTERSYNCRQ" type="ofx:InterSyncRequest"/>
+					<xsd:element name="RECINTERSYNCRQ" type="ofx:RecurringInterSyncRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="InterTransferResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "INTERXFERMSGSRSV1" is of type "InterTransferResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="INTERTRNRS" type="ofx:InterTransactionResponse"/>
+					<xsd:element name="RECINTERTRNRS" type="ofx:RecurringInterTransactionResponse"/>
+					<xsd:element name="INTERSYNCRS" type="ofx:InterSyncResponse"/>
+					<xsd:element name="RECINTERSYNCRS" type="ofx:RecurringInterSyncResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProfileRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PROFMSGSRQV1" is of type "ProfileRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="PROFTRNRQ" type="ofx:ProfileTransactionRequest"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProfileResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PROFMSGSRSV1" is of type "ProfileResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="PROFTRNRS" type="ofx:ProfileTransactionResponse"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SecurityListRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "SECLISTMSGSRQV1" is of type "SecurityListRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence>
+					<xsd:element name="SECLISTTRNRQ" type="ofx:SecurityListTransactionRequest" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SecurityListResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "SECLISTMSGSRSV1" is of type "SecurityListResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence>
+					<xsd:element name="SECLISTTRNRS" type="ofx:SecurityListTransactionResponse" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="SECLIST" type="ofx:SecurityList" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SignonRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "SIGNONMSGSRQV1" is of type "SignonRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence>
+					<xsd:element name="SONRQ" type="ofx:SignonRequest"/>
+					<xsd:element name="PINCHTRNRQ" type="ofx:PinChangeTransactionRequest" minOccurs="0"/>
+					<xsd:element name="CHALLENGETRNRQ" type="ofx:ChallengeTransactionRequest" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SignonResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "SIGNONMSGSRSV1" is of type "SignonResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence>
+					<xsd:element name="SONRS" type="ofx:SignonResponse"/>
+					<xsd:element name="PINCHTRNRS" type="ofx:PinChangeTransactionResponse" minOccurs="0"/>
+					<xsd:element name="CHALLENGETRNRS" type="ofx:ChallengeTransactionResponse" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SignupRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "SIGNUPMSGSRQV1" is of type "SignupRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="ENROLLTRNRQ" type="ofx:EnrollTransactionRequest"/>
+					<xsd:element name="ACCTINFOTRNRQ" type="ofx:AccountInfoTransactionRequest"/>
+					<xsd:element name="CHGUSERINFOTRNRQ" type="ofx:ChangeUserInfoTransactionRequest"/>
+					<xsd:element name="CHGUSERINFOSYNCRQ" type="ofx:ChangeUserInfoSyncRequest"/>
+					<xsd:element name="ACCTTRNRQ" type="ofx:AccountTransactionRequest"/>
+					<xsd:element name="ACCTSYNCRQ" type="ofx:AccountSyncRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SignupResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "SIGNUPMSGSRSV1" is of type "SignupResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="ENROLLTRNRS" type="ofx:EnrollTransactionResponse"/>
+					<xsd:element name="ACCTINFOTRNRS" type="ofx:AccountInfoTransactionResponse"/>
+					<xsd:element name="CHGUSERINFOTRNRS" type="ofx:ChangeUserInfoTransactionResponse"/>
+					<xsd:element name="CHGUSERINFOSYNCRS" type="ofx:ChangeUserInfoSyncResponse"/>
+					<xsd:element name="ACCTTRNRS" type="ofx:AccountTransactionResponse"/>
+					<xsd:element name="ACCTSYNCRS" type="ofx:AccountSyncResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1098RequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1098MSGSRQV1" is of type "Tax1098RequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="TAX1098TRNRQ" type="ofx:Tax1098TransactionRequest"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1098ResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1098MSGSRSV1" is of type "Tax1098ResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="TAX1098TRNRS" type="ofx:Tax1098TransactionResponse"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099RequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099MSGSRQV1" is of type "Tax1099RequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="TAX1099TRNRQ" type="ofx:Tax1099TransactionRequest"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099ResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099MSGSRSV1" is of type "Tax1099ResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="TAX1099TRNRS" type="ofx:Tax1099TransactionResponse"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="TaxW2RequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAXW2MSGSRQV1" is of type "TaxW2RequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="TAXW2TRNRQ" type="ofx:TaxW2TransactionRequest"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="TaxW2ResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAXW2MSGSRSV1" is of type "TaxW2ResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="TAXW2TRNRS" type="ofx:TaxW2TransactionResponse"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="WireTransferRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "WIREXFERMSGSRQV1" is of type "WireTransferRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="WIRETRNRQ" type="ofx:WireTransactionRequest"/>
+					<xsd:element name="WIRESYNCRQ" type="ofx:WireSyncRequest"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="WireTransferResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "WIREXFERMSGSRSV1" is of type "WireTransferResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="WIRETRNRS" type="ofx:WireTransactionResponse"/>
+					<xsd:element name="WIRESYNCRS" type="ofx:WireSyncResponse"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PresentmentDirRequestMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PRESDIRMSGSRQV1" is of type "PresentmentDirRequestMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractRequestMessageSet">
+				<xsd:sequence>
+					<xsd:element name="FINDBILLERTRNRQ" type="ofx:FindBillerTransactionRequest"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PresentmentDirResponseMessageSetV1">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PRESDIRMSGSRSV1" is of type "PresentmentDirResponseMessageSetV1"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractResponseMessageSet">
+				<xsd:sequence>
+					<xsd:element name="FINDBILLERTRNRS" type="ofx:FindBillerTransactionResponse"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AbstractRequestMessageSet" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTopLevelMessageSet"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AbstractResponseMessageSet" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTopLevelMessageSet"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AbstractTopLevelMessageSet" abstract="true"/>
+</xsd:schema>

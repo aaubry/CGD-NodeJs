@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Kathy Eusepi (Intuit) -->
+<!--
+
+	Open Financial Exchange Specification (c)1996-2003 ("Specification") by all of its publishers: 
+	CheckFree Corp., Intuit Inc., and Microsoft Corporation. All rights reserved. 
+
+	Revision History:
+
+	Version	Date    	Editor Email Addr    		Short Description
+
+	p16	2002-02-10  	altenburgd@businesslogic.com	Initial revision
+        p17     2002-02-11      Gil_Clark@intuit.com            
+        p18     2002-02-11      Gil_Clark@intuit.com            Changed 'Tax1099OId_V100' to 'Tax1099OID_V100'
+        p20     2002-03-17      Gil_Clark@intuit.com           Changed name of base types to use Abstract
+                                                                                        naming convention.
+        p21     2002-03-17      altenburgd@businesslogic.com    Changed elementFormDefault to "unqualified"
+                                                                Changed namespace to "http://ofx.net/types/2003/04"
+        p23    2002-05-13      altenburgd@businesslogic.com     Bugfixes based on Intuit Schema QA
+		RC4    2003-06-24      gil_clark@intuit.com             Added collapse to fixed length, non-string types and enums.
+-->
+<xsd:schema targetNamespace="http://ofx.net/types/2003/04" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ofx="http://ofx.net/types/2003/04" elementFormDefault="unqualified">
+	<xsd:include schemaLocation="OFX_Common.xsd"/>
+	<xsd:complexType name="AdditionalStateTaxWithheldAggregate">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "ADDLSTTAXWHAGG" is of type "AdditionalStateTaxWithheldAggregate"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="STTAXWH" type="ofx:AmountType"/>
+			<xsd:element name="PAYERSTATE" type="ofx:StateCodeType"/>
+			<xsd:element name="PAYERSTID" type="ofx:IdType" minOccurs="0"/>
+			<xsd:element name="STINCOME" type="ofx:AmountType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ExtendedBInfo_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "EXTDBINFO_V100" is of type "ExtendedBInfo_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PROCDET_V100" type="ofx:ProceedDescription_V100" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="TEINTEREST" type="ofx:AmountType" minOccurs="0"/>
+			<xsd:element name="PABINTEREST" type="ofx:AmountType" minOccurs="0"/>
+			<xsd:element name="TEINTDIVIDEND" type="ofx:AmountType" minOccurs="0"/>
+			<xsd:element name="PABDIVIDEND" type="ofx:AmountType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LocalTaxWithheldAggregate">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "LCLTAXWHAGG" is of type "LocalTaxWithheldAggregate"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="AMOUNT" type="ofx:AmountType"/>
+			<xsd:element name="NAMELCL" type="ofx:GenericNameType"/>
+			<xsd:element name="LCLDIST" type="ofx:AmountType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="LongMessageType">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "LONGMSG" is of type "LongMessageType"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="2000"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LongShortEnum">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "LONGSHORTENUM" is of type "LongShortEnum"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:whiteSpace value="collapse"/>
+			<xsd:enumeration value="LONG"/>
+			<xsd:enumeration value="SHORT"/>
+			<xsd:enumeration value="QUAL5YEAR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="PayerAddress">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PAYERADDR" is of type "PayerAddress"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PAYERNAME1" type="ofx:GenericNameType"/>
+			<xsd:element name="PAYERNAME2" type="ofx:GenericNameType" minOccurs="0"/>
+			<xsd:element name="ADDR1" type="ofx:AddressType"/>
+			<xsd:element name="ADDR2" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="ADDR3" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="CITY" type="ofx:AddressType"/>
+			<xsd:element name="STATE" type="ofx:StateType"/>
+			<xsd:element name="POSTALCODE" type="ofx:ZipType"/>
+			<xsd:element name="PHONE" type="ofx:PhoneType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ProceedDescription_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "PROCDET_V100" is of type "ProceedDescription_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="DTAQD" type="ofx:DateTimeType"/>
+				<xsd:element name="DTVAR" type="ofx:BooleanType"/>
+			</xsd:choice>
+			<xsd:element name="DTSALE" type="ofx:DateTimeType"/>
+			<xsd:element name="SECNAME" type="ofx:SecurityNameType"/>
+			<xsd:element name="NUMSHRS" type="ofx:AmountType" minOccurs="0"/>
+			<xsd:element name="COSTBASIS" type="ofx:AmountType" minOccurs="0"/>
+			<xsd:element name="SALESPR" type="ofx:AmountType"/>
+			<xsd:element name="LONGSHORT" type="ofx:LongShortEnum" minOccurs="0"/>
+			<xsd:element name="WASHSALE" type="ofx:BooleanType" minOccurs="0"/>
+			<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RecurringAddress">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "RECADDR" is of type "RecurringAddress"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RECNAME1" type="ofx:GenericNameType"/>
+			<xsd:element name="RECNAME2" type="ofx:GenericNameType" minOccurs="0"/>
+			<xsd:element name="ADDR1" type="ofx:AddressType"/>
+			<xsd:element name="ADDR2" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="ADDR3" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="CITY" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="STATE" type="ofx:StateType" minOccurs="0"/>
+			<xsd:element name="POSTALCODE" type="ofx:ZipType" minOccurs="0"/>
+			<xsd:element name="COUNTRYSTRING" type="ofx:CountryStringType" minOccurs="0"/>
+			<xsd:element name="PHONE" type="ofx:PhoneType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StocksBonds">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "STKBND" is of type "StocksBonds"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="STKBNDAMT" type="ofx:AmountType"/>
+			<xsd:element name="SBGROS" type="ofx:BooleanType" minOccurs="0"/>
+			<xsd:element name="SBGROSLESS" type="ofx:BooleanType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StateTaxWithheldAggregate">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "STTAXWHAGG" is of type "StateTaxWithheldAggregate"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="AMOUNT" type="ofx:AmountType"/>
+			<xsd:element name="PAYERSTATE" type="ofx:StateCodeType"/>
+			<xsd:element name="PAYERSTID" type="ofx:IdType" minOccurs="0"/>
+			<xsd:element name="STDIST" type="ofx:AmountType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AbstractTaxForm1099" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="SRVRTID" type="ofx:ServerIdType"/>
+			<xsd:element name="TAXYEAR" type="ofx:YearType"/>
+			<xsd:element name="VOID" type="ofx:BooleanType" minOccurs="0"/>
+			<xsd:element name="CORRECTED" type="ofx:BooleanType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099B_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099B_V100" is of type "Tax1099B_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxForm1099">
+				<xsd:sequence>
+					<xsd:element name="DTSALE" type="ofx:DateTimeType" minOccurs="0"/>
+					<xsd:element name="CUSIPNUM" type="ofx:CusipType" minOccurs="0"/>
+					<xsd:element name="STKBND" type="ofx:StocksBonds" minOccurs="0"/>
+					<xsd:element name="BARTERING" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="DSCR" type="ofx:ShortMessageType" minOccurs="0"/>
+					<xsd:element name="PROFIT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="UNRELPROFITPREV" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="UNRELPROFIT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="AGGPROFIT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="EXTDBINFO_V100" type="ofx:ExtendedBInfo_V100" minOccurs="0"/>
+					<xsd:element name="PAYERADDR" type="ofx:PayerAddress"/>
+					<xsd:element name="PAYERID" type="ofx:GenericNameType"/>
+					<xsd:element name="RECADDR" type="ofx:RecurringAddress" minOccurs="0"/>
+					<xsd:element name="RECID" type="ofx:IdType"/>
+					<xsd:element name="RECACCT" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="TINNOT" type="ofx:BooleanType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099DIV_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099DIV_V100" is of type "Tax1099DIV_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxForm1099">
+				<xsd:sequence>
+					<xsd:element name="ORDDIV" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="QUALIFIEDDIV" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="TOTCAPGAIN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="POSTMAY5CAPGAIN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="P28GAIN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="UNRECSEC1250" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SEC1202" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="QUAL5YEAR" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="NONTAXDIST" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="INVESTEXP" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FORTAXPD" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FORCNT" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="CASHLIQ" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="NONCASHLIQ" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="PAYERADDR" type="ofx:PayerAddress"/>
+					<xsd:element name="PAYERID" type="ofx:GenericNameType"/>
+					<xsd:element name="RECADDR" type="ofx:RecurringAddress" minOccurs="0"/>
+					<xsd:element name="RECID" type="ofx:IdType"/>
+					<xsd:element name="RECACCT" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="TINNOT" type="ofx:BooleanType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099INT_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099INT_V100" is of type "Tax1099Integer_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxForm1099">
+				<xsd:sequence>
+					<xsd:element name="PAYERRTN" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="INTINCOME" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ERLWITHPEN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="INTUSBNDTRS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="INVESTEXP" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FORTAXPD" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FORCNT" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="PAYERADDR" type="ofx:PayerAddress"/>
+					<xsd:element name="PAYERID" type="ofx:GenericNameType"/>
+					<xsd:element name="RECADDR" type="ofx:RecurringAddress" minOccurs="0"/>
+					<xsd:element name="RECID" type="ofx:IdType"/>
+					<xsd:element name="RECACCT" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="TINNOT" type="ofx:BooleanType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099MISC_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099MISC_V100" is of type "Tax1099Misc_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxForm1099">
+				<xsd:sequence>
+					<xsd:element name="RENTS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ROYALTIES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="OTHERINCOME" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FISHBOATPRO" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="MEDHEALTHPAY" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="NONEMPCOMP" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SUBPMTS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="PAYER5KSALES" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="CROPINSPRO" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:choice>
+						<xsd:sequence>
+							<xsd:element name="STTAXWH" type="ofx:AmountType" minOccurs="0"/>
+							<xsd:element name="PAYERSTATE" type="ofx:StateCodeType" minOccurs="0"/>
+							<xsd:element name="PAYERSTID" type="ofx:IdType" minOccurs="0"/>
+							<xsd:element name="STINCOME" type="ofx:AmountType" minOccurs="0"/>
+						</xsd:sequence>
+						<xsd:element name="ADDLSTTAXWHAGG" type="ofx:AdditionalStateTaxWithheldAggregate" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:choice>
+					<xsd:element name="GROSSATTOR" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="EXCSGLDN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SEC409ADEFERRALS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SEC409AINCOME" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="PAYERADDR" type="ofx:PayerAddress"/>
+					<xsd:element name="PAYERID" type="ofx:GenericNameType"/>
+					<xsd:element name="RECADDR" type="ofx:RecurringAddress" minOccurs="0"/>
+					<xsd:element name="RECID" type="ofx:IdType"/>
+					<xsd:element name="RECACCT" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="TINNOT" type="ofx:BooleanType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099OID_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099OID_V100" is of type "Tax1099OID_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxForm1099">
+				<xsd:sequence>
+					<xsd:element name="ORIGISDISC" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="OTHERPERINT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ERLWITHPEN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="DESCRIPTION" type="ofx:LongMessageType" minOccurs="0"/>
+					<xsd:element name="OIDONUSTRES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="INVESTEXP" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="PAYERADDR" type="ofx:PayerAddress"/>
+					<xsd:element name="PAYERID" type="ofx:GenericNameType"/>
+					<xsd:element name="RECADDR" type="ofx:RecurringAddress" minOccurs="0"/>
+					<xsd:element name="RECID" type="ofx:IdType"/>
+					<xsd:element name="RECACCT" type="ofx:GenericNameType" minOccurs="0"/>
+					<xsd:element name="TINNOT" type="ofx:BooleanType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Tax1099R_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAX1099R_V100" is of type "Tax1099R_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxForm1099">
+				<xsd:sequence>
+					<xsd:element name="GROSSDIST" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="TAXAMT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="TAXAMTND" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="TOTALDIST" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="CAPGAIN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="EMPCONTINS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="NETUNAPEMP" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="DISTCODE" type="ofx:CharType" maxOccurs="unbounded"/>
+					<xsd:element name="IRASEPSIMP" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="ANNCTRCTDIST" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ANNCTRCTPER" type="ofx:RateType" minOccurs="0"/>
+					<xsd:element name="PERTOTDIST" type="ofx:RateType" minOccurs="0"/>
+					<xsd:element name="TOTEMPCONT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="STTAXWHAGG" type="ofx:StateTaxWithheldAggregate" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="LCLTAXWHAGG" type="ofx:LocalTaxWithheldAggregate" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="PAYERADDR" type="ofx:PayerAddress"/>
+					<xsd:element name="PAYERID" type="ofx:GenericNameType"/>
+					<xsd:element name="RECADDR" type="ofx:RecurringAddress" minOccurs="0"/>
+					<xsd:element name="RECID" type="ofx:IdType"/>
+					<xsd:element name="RECACCT" type="ofx:GenericNameType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

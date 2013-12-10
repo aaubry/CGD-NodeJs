@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!--
+
+	Open Financial Exchange Specification (c)1996-2003 ("Specification") by all of its publishers: 
+	CheckFree Corp., Intuit Inc., and Microsoft Corporation. All rights reserved. 
+
+	Revision History:
+
+	Version	Date    	Editor Email Addr    		Short Description
+
+	p18	2002-02-11  	altenburgd@businesslogic.com	Initial revision
+        p21     2002-03-17      altenburgd@businesslogic.com    Changed elementFormDefault to "unqualified"
+                                                                Changed namespace to "http://ofx.net/types/2003/04"
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  xmlns:ofx="http://ofx.net/types/2003/04"
+  targetNamespace="http://ofx.net/types/2003/04">
+  
+  <xsd:include schemaLocation = "OFX_TaxW2.xsd" />
+
+  <xsd:complexType name="TaxW2Request">
+    <xsd:annotation>
+      <xsd:documentation>
+        The OFX element "TAXW2RQ" is of type "TaxW2Request"
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="SSN" type="ofx:GenericNameType" />
+
+      <xsd:element name="TAXYEAR" type="ofx:YearType" minOccurs="0"
+      maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="TaxW2Response">
+    <xsd:annotation>
+      <xsd:documentation>
+        The OFX element "TAXW2RS" is of type "TaxW2Response"
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="SSN" type="ofx:GenericNameType" minOccurs="0"
+      maxOccurs="1" />
+
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element name="TAXW2_V100" type="ofx:TaxW2_V100" />
+
+        <xsd:element name="TAXW2_V200" type="ofx:TaxW2_V200" />
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>

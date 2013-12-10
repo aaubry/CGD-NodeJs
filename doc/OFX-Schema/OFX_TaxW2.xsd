@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Brea Anne Hylan (Intuit) -->
+<!--
+	Open Financial Exchange Specification (c)1996-2003 ("Specification") by all of its publishers: 
+	CheckFree Corp., Intuit Inc., and Microsoft Corporation. All rights reserved. 
+
+	Revision History:
+
+	Version	Date    	Editor Email Addr    		Short Description
+
+	p17	2002-02-11  	altenburgd@businesslogic.com	Initial revision
+        p18     2002-02-10      Gil_Clark@intuit.com
+        p20     2002-03-17      Gil_Clark@intuit.com           Changed name of base types to use Abstract
+                                                                                        naming convention.
+        p21     2002-03-17      altenburgd@businesslogic.com    Changed elementFormDefault to "unqualified"
+                                                                Changed namespace to "http://ofx.net/types/2003/04"
+        p23     2002-05-13      altenburgd@businesslogic.com    Bugfixes based on Intuit Schema QA
+        R5      2002-07-22      gil_clark@intuit.com                        Added collapse to CODE type.
+-->
+<xsd:schema xmlns:ofx="http://ofx.net/types/2003/04" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ofx.net/types/2003/04" elementFormDefault="unqualified">
+	<xsd:include schemaLocation="OFX_Common.xsd"/>
+	<xsd:simpleType name="ControlNumber">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "CNTRLNO" is of type "ControlNumber"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="32"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Codes">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "CODES" is of type "Codes"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CODE">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="2"/>
+						<xsd:minLength value="1"/>
+						<xsd:whiteSpace value="collapse"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="CODEAMOUNT" type="ofx:AmountType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Employee">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "EMPLOYEE" is of type "Employee"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="SSN" type="ofx:GenericNameType"/>
+			<xsd:element name="FIRSTNAME" type="ofx:GenericNameType"/>
+			<xsd:element name="MIDDLENAME" type="ofx:GenericNameType" minOccurs="0"/>
+			<xsd:element name="LASTNAME" type="ofx:GenericNameType"/>
+			<xsd:element name="ADDR1" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="ADDR2" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="ADDR3" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="CITY" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="STATE" type="ofx:StateType" minOccurs="0"/>
+			<xsd:element name="POSTALCODE" type="ofx:ZipType" minOccurs="0"/>
+			<xsd:element name="COUNTRYSTRING" type="ofx:CountryStringType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Employer">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "EMPLOYER" is of type "Employer"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="FEDIDNUMBER" type="ofx:GenericNameType"/>
+			<xsd:element name="NAME1" type="ofx:GenericNameType"/>
+			<xsd:element name="NAME2" type="ofx:GenericNameType" minOccurs="0"/>
+			<xsd:element name="ADDR1" type="ofx:AddressType"/>
+			<xsd:element name="ADDR2" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="ADDR3" type="ofx:AddressType" minOccurs="0"/>
+			<xsd:element name="CITY" type="ofx:AddressType"/>
+			<xsd:element name="STATE" type="ofx:StateType"/>
+			<xsd:element name="POSTALCODE" type="ofx:ZipType"/>
+			<xsd:element name="COUNTRYSTRING" type="ofx:CountryStringType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LocalInfo">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "LOCALINFO" is of type "LocalInfo"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="LOCALITY" type="ofx:GenericNameType"/>
+			<xsd:element name="LOCALWAGES" type="ofx:AmountType" minOccurs="0"/>
+			<xsd:element name="LOCALTAXWH" type="ofx:AmountType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Other">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "OTHER" is of type "Other"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="OTHERDESC" type="ofx:GenericDescriptionType"/>
+			<xsd:element name="OTHERAMOUNT" type="ofx:AmountType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StateInfo">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "STATEINFO" is of type "StateInfo"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="STATECODE" type="ofx:StateCodeType"/>
+			<xsd:element name="EMPLOYERSTID" type="ofx:IdType" minOccurs="0"/>
+			<xsd:element name="STATEWAGES" type="ofx:AmountType" minOccurs="0"/>
+			<xsd:element name="STATETAXWH" type="ofx:AmountType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AbstractTaxW2" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="TAXYEAR" type="ofx:YearType"/>
+			<xsd:element name="CNTRLNO" type="ofx:ControlNumber" minOccurs="0"/>
+			<xsd:element name="VOID" type="ofx:BooleanType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TaxW2_V100">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAXW2_V100" is of type "TaxW2_V100"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxW2">
+				<xsd:sequence>
+					<xsd:element name="EMPLOYER" type="ofx:Employer"/>
+					<xsd:element name="EMPLOYEE" type="ofx:Employee"/>
+					<xsd:element name="WAGES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SSWAGES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SSTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="MEDICAREWAGES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="MEDICARETAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SSTIPS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ALLOCATEDTIPS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ADVANCEDEIC" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="DEPCAREBENEFIT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="NONQUALPLAN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="BENEFITSBOX1" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="CODES" type="ofx:Codes" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="OTHER" type="ofx:Other" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="STATUTORY" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="DECEASED" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="PENSIONPLAN" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="LEGALREP" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="DEFERREDCOMP" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="STATEINFO" type="ofx:StateInfo" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="LOCALINFO" type="ofx:LocalInfo" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="TaxW2_V200">
+		<xsd:annotation>
+			<xsd:documentation>
+        The OFX element "TAXW2_V200" is of type "TaxW2_V200"
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ofx:AbstractTaxW2">
+				<xsd:sequence>
+					<xsd:element name="EMPLOYER" type="ofx:Employer"/>
+					<xsd:element name="EMPLOYEE" type="ofx:Employee"/>
+					<xsd:element name="WAGES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="FEDTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SSWAGES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SSTAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="MEDICAREWAGES" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="MEDICARETAXWH" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="SSTIPS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ALLOCATEDTIPS" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="ADVANCEDEIC" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="DEPCAREBENEFIT" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="NONQUALPLAN" type="ofx:AmountType" minOccurs="0"/>
+					<xsd:element name="CODES" type="ofx:Codes" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="OTHER" type="ofx:Other" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="STATUTORY" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="RETIREMENTPLAN" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="THIRDPARTYSICKPAY" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="DEFERREDCOMP" type="ofx:BooleanType" minOccurs="0"/>
+					<xsd:element name="STATEINFO" type="ofx:StateInfo" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="LOCALINFO" type="ofx:LocalInfo" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>
