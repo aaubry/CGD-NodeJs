@@ -2,13 +2,15 @@ var program = require("commander");
 var prompt = require("prompt");
 var Table = require("easy-table");
 var api = require("./api");
+var fs = require("fs");
 
 prompt.start();
 
 program
 	.version("0.0.1")
 	.option("-v, --verbose", "print additional information to stderr")
-	.option("-u, --user <user>", "authenticate as <user>");
+	.option("-u, --user <user>", "authenticate as <user>")
+	.option("-o, --output <outputFile>", "output data to <outputFile>");
 
 program
 	.command("accounts")
@@ -23,6 +25,10 @@ program
 	.action(authenticated(retrieve_movements));
 
 program.parse(process.argv);
+
+if(program.args.length == 0) {
+	program.help();
+}
 
 function parse_date(val) {
 	var match = val.match(/^(\d{4})[\-\/\.]?(\d{1,2})[\-\/\.]?(\d{1,2})$/)
@@ -42,19 +48,25 @@ function parse_date(val) {
 }
 
 function print_table(val) {
-	var tbl = new Table();
-	val.forEach(function(a) {
-		for(var name in a) {
-			tbl.cell(name, a[name]);
-		}
-		tbl.newRow();
-	});
-	
-	console.log(tbl.toString());
+	if(program.output) {
+		var lines = [];
+		val.forEach(function(a) {
+			var line = [];
+			for(var name in a) {
+				line.push(a[name]);
+			}
+			lines.push(line.join("\t"));
+		});
+		fs.writeFile(program.output, lines.join("\n"));
+	} else {
+		var tbl = Table.printArray(val);
+		console.log(tbl.toString());
+	}
 }
 
 function authenticated(action) {
 	return function() {
+		
 		var args = Array.prototype.slice.call(arguments);
 		
 		if(program.verbose != true) {

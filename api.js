@@ -29,7 +29,7 @@ function pad_number(val, length, padding) {
 }
 
 function format_date(date, hour) {
-	hour = hour || "00:00:00";
+	hour = hour != null ? hour : "00:00:00";
 	
 	var year = pad_number(date.getFullYear(), 4);
 	var month = pad_number(date.getMonth() + 1, 2);
@@ -42,7 +42,7 @@ function parse_date(val) {
 }
 
 function parse_money(val) {
-	return pad_number(val, 3).replace(/^(\d*)(\d\d)$/, "$1.$2");
+	return pad_number(val, 3).replace(/^(\d*)(\d\d)$/, "$1,$2");
 }
 
 exports.authenticate = function(username, password, cb) {
@@ -128,8 +128,8 @@ exports.get_movements = function(auth, account, startDate, endDate, chunkCb, cb)
 				date: parse_date(m.dt),
 				value_date: parse_date(m.dtv),
 				number: m.nmv,
-				amount: parse_money(m.mon),
-				type: m.tpm
+				debit: m.tpm == "D" ? parse_money(m.mon) : null,
+				credit: m.tpm == "C" ? parse_money(m.mon) : null
 			};
 		});
 		
