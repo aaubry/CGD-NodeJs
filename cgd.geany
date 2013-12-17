@@ -15,6 +15,7 @@ indent_mode=2
 [project]
 name=cgd
 base_path=/home/aaubry/Work/cgd/
+description=
 
 [long line marker]
 long_line_behaviour=1
@@ -22,6 +23,9 @@ long_line_column=72
 
 [files]
 current_page=0
+FILE_NAME_0=1698;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Fcgd%2Fapp.js;0;4
+FILE_NAME_1=666;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Fcgd%2Fapi.js;0;4
+FILE_NAME_2=232;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Fcgd%2Fpackage.json;0;4
 
 [VTE]
-last_dir=/home/aaubry
+last_dir=/home/aaubry/Work/cgd

@@ -3,6 +3,7 @@ var prompt = require("prompt");
 var Table = require("easy-table");
 var api = require("./api");
 var fs = require("fs");
+var ofx = require("ofx");
 
 prompt.start();
 
@@ -10,7 +11,8 @@ program
 	.version("0.0.1")
 	.option("-v, --verbose", "print additional information to stderr")
 	.option("-u, --user <user>", "authenticate as <user>")
-	.option("-o, --output <outputFile>", "output data to <outputFile>");
+	.option("-o, --output <outputFile>", "output data to <outputFile>")
+	.option("-f, --format <format>", "output data to <format> [tsv|ofx|qif]", "tsv");
 
 program
 	.command("accounts")
@@ -47,8 +49,8 @@ function parse_date(val) {
 	return null;
 }
 
-function print_table(val) {
-	if(program.output) {
+var export_formats = {
+	tsv: function(val) {
 		var lines = [];
 		val.forEach(function(a) {
 			var line = [];
@@ -58,6 +60,49 @@ function print_table(val) {
 			lines.push(line.join("\t"));
 		});
 		fs.writeFile(program.output, lines.join("\n"));
+	},
+	qif: function(val) {
+		
+	},
+	ofx: function(val) {
+		var header = {
+			OFXHEADER: "100",
+			DATA: "OFXSGML",
+			VERSION: "103",
+			SECURITY: "NONE",
+			ENCODING: "USASCII",
+			CHARSET: "1252",
+			COMPRESSION: "NONE",
+			OLDFILEUID: "NONE",
+			NEWFILEUID: "unique id here"
+		};
+		
+		var body = {
+			SIGNONMSGSRQV1: {
+			  SONRQ: {
+				DTCLIENT: "value",
+				USERID: "user id",
+				USERPASS: "password",
+				LANGUAGE: "ENG",
+				FI: {
+				  ORG: "org",
+				  FID: "fid"
+				},
+				APPID: "QWIN",
+				APPVER: "2100",
+				CLIENTUID: "needed by some places"
+			  }
+			}
+		};
+
+		var ofx_string = ofx.serialize(header, body);
+		fs.writeFile(program.output, ofx_string);		
+	}
+};
+
+function print_table(val) {
+	if(program.output) {
+		export_formats[program.format](val);
 	} else {
 		var tbl = Table.printArray(val);
 		console.log(tbl.toString());
@@ -115,12 +160,15 @@ function retrieve_movements(account, args, auth) {
 	
 	api.get_movements(auth, account, startDate, endDate, chunk_retrieved, movements_retrieved);
 	
-	function chunk_retrieved(movements) {
-		print_table(movements);
+	var movements = [];
+	
+	function chunk_retrieved(chunk) {
+		movements.push.apply(movements, chunk);
 	}
 	
 	function movements_retrieved(err) {
 		if(err) return console.error("ERROR", err);
 		console.warn("Done");
+		print_table(movements);
 	}
 }
