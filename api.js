@@ -123,13 +123,31 @@ exports.get_movements = function(auth, account, startDate, endDate, chunkCb, cb)
 		console.warn("Movement chunk retrieved");
 		
 		var movements = body.lmov.map(function(m) {
+			/*
+				{ tj: 0,
+				  moeo: 'EUR',
+				  monmo: 1180,
+				  dtv: '2013-01-01 00:00:00',
+				  sdaps: 47659,
+				  ndc: 0,
+				  nmv: 732,
+				  estor: '',
+				  apor: 'VR',
+				  dt: '2013-01-01 00:00:00',
+				  mon: 1180,
+				  des: 'Compras LIDL 29 12',
+				  tpm: 'D',
+				  saps: 47659 }
+  			*/
+			
 			return {
 				description: m.des,
 				date: parse_date(m.dt),
 				value_date: parse_date(m.dtv),
 				number: m.nmv,
 				debit: m.tpm == "D" ? parse_money(m.mon) : null,
-				credit: m.tpm == "C" ? parse_money(m.mon) : null
+				credit: m.tpm == "C" ? parse_money(m.mon) : null,
+				balance: parse_money(m.saps)
 			};
 		});
 		

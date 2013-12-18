@@ -23,9 +23,8 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=1698;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Fcgd%2Fapp.js;0;4
-FILE_NAME_1=666;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Fcgd%2Fapi.js;0;4
-FILE_NAME_2=232;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Fcgd%2Fpackage.json;0;4
+FILE_NAME_0=3739;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Faccounting%2Fcgd%2Fapp.js;0;4
+FILE_NAME_1=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Faaubry%2FWork%2Faccounting%2Fcgd%2Fapi.js;0;4
 
 [VTE]
-last_dir=/home/aaubry/Work/cgd
+last_dir=/home/aaubry/Work
