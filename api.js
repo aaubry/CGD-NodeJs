@@ -20,12 +20,18 @@ function handle_error(handler, cb) {
 
 function pad_number(val, length, padding) {
 	padding = padding || "0";
+	
+	val = parseInt(val);
+	var isNegative = val < 0;
+	if(isNegative) val = -val;
+	
 	val = val.toString();
 	
 	while(val.length < length) {
 		val = padding + val;
 	}
-	return val;
+	
+	return isNegative ? "-" + val : val;
 }
 
 function format_date(date, hour) {
@@ -41,8 +47,27 @@ function parse_date(val) {
 	return val.match(/^(\d{4}-\d{2}-\d{2})/)[1];
 }
 
+function string_to_date(val) {
+	var match = val.match(/^(\d{4})-(\d{2})-(\d{2})/);
+	return new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
+}
+
+function compare_dates(first, second) {
+	var diff = first.getFullYear() - second.getFullYear();
+	if(diff == 0) {
+		diff = first.getMonth() - second.getMonth();
+		if(diff == 0) {
+			diff = first.getDate() - second.getDate();
+		}
+	}
+	
+	console.log(first, second, diff);
+	
+	return diff;
+}
+
 function parse_money(val) {
-	return pad_number(val, 3).replace(/^(\d*)(\d\d)$/, "$1,$2");
+	return pad_number(val, 3).replace(/^(-?\d*)(\d\d)$/, "$1,$2");
 }
 
 exports.authenticate = function(username, password, cb) {
@@ -122,34 +147,94 @@ exports.get_movements = function(auth, account, startDate, endDate, chunkCb, cb)
 	function movements_retrieved(response, body) {
 		console.warn("Movement chunk retrieved");
 		
-		var movements = body.lmov.map(function(m) {
-			/*
-				{ tj: 0,
-				  moeo: 'EUR',
-				  monmo: 1180,
-				  dtv: '2013-01-01 00:00:00',
-				  sdaps: 47659,
-				  ndc: 0,
-				  nmv: 732,
-				  estor: '',
-				  apor: 'VR',
-				  dt: '2013-01-01 00:00:00',
-				  mon: 1180,
-				  des: 'Compras LIDL 29 12',
-				  tpm: 'D',
-				  saps: 47659 }
-  			*/
+		var movements = null;
+		
+		if(body.lmovdpe != null) {
+			movements = [];
 			
-			return {
-				description: m.des,
-				date: parse_date(m.dt),
-				value_date: parse_date(m.dtv),
-				number: m.nmv,
-				debit: m.tpm == "D" ? parse_money(m.mon) : null,
-				credit: m.tpm == "C" ? parse_money(m.mon) : null,
-				balance: parse_money(m.saps)
-			};
-		});
+			var today = new Date();
+			body.lmovdpe.forEach(function(m) {
+				/*
+					{ moe: 'EUR',
+					   tj: 330,
+					   dta: '2012-07-05 00:00:00',
+					   nsd: 6,
+					   mcnt: 50000,
+					   dtpv: '2014-07-05 00:00:00',
+					   dtij: null,
+					   mit: null,
+					   dst: null,
+					   dspe: null,
+					   dsp: '730 dias',
+					   dspr: 'CaixaNet24M Nº 6',
+					   dsr: null,
+					   dsttc: null,
+					   msgb1: null,
+					   msgb2: null,
+					   msgh: null,
+					   dt: '2012-07-05 00:00:00',
+					   mon: 50000,
+					   des: null,
+					   tpm: null,
+					   saps: 50000 }
+				*/
+				
+				movements.push({
+					description: m.dspr,
+					date: parse_date(m.dt),
+					value_date: parse_date(m.dtpv),
+					number: m.nsd,
+					debit: null,
+					credit: parse_money(m.mon),
+					balance: parse_money(m.saps)
+				});
+				
+				var expirationDate = string_to_date(m.dtpv);
+				if(compare_dates(today, expirationDate) >= 0) {
+					movements.push({
+						description: m.dspr,
+						date: parse_date(m.dt),
+						value_date: parse_date(m.dtpv),
+						number: m.nsd,
+						debit: parse_money(m.mon),
+						credit: null,
+						balance: parse_money(m.saps)
+					});
+				}
+			});
+		} else if(body.lmov != null) {
+			movements = body.lmov.map(function(m) {
+				/*
+					{ tj: 0,
+					  moeo: 'EUR',
+					  monmo: 1180,
+					  dtv: '2013-01-01 00:00:00',
+					  sdaps: 47659,
+					  ndc: 0,
+					  nmv: 732,
+					  estor: '',
+					  apor: 'VR',
+					  dt: '2013-01-01 00:00:00',
+					  mon: 1180,
+					  des: 'Compras LIDL 29 12',
+					  tpm: 'D',
+					  saps: 47659 }
+				*/
+				
+				return {
+					description: m.des,
+					date: parse_date(m.dt),
+					value_date: parse_date(m.dtv),
+					number: m.nmv,
+					debit: m.tpm == "D" ? parse_money(m.mon) : null,
+					credit: m.tpm == "C" ? parse_money(m.mon) : null,
+					balance: parse_money(m.saps)
+				};
+			});
+		} else {
+			console.error(body);
+			return cb("Unexpected response");
+		}
 		
 		chunkCb(movements);
 		
