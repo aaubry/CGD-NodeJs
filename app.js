@@ -22,8 +22,8 @@ program
 program
 	.command("movements <account>")
 	.description("Retrieve movements")
-	.option("-s, --start-date <startDate>", "get movements starting from <startDate>", parse_date)
-	.option("-e, --end-date <endDate>", "get movements starting from <endDate>", parse_date)
+	.option("-s, --start-date <startDate>", "get movements starting from <startDate>")
+	.option("-e, --end-date <endDate>", "get movements starting from <endDate>")
 	.action(authenticated(retrieve_movements));
 
 program.parse(process.argv);
@@ -33,20 +33,62 @@ if(program.args.length == 0) {
 }
 
 function parse_date(val) {
-	var match = val.match(/^(\d{4})[\-\/\.]?(\d{1,2})[\-\/\.]?(\d{1,2})$/)
-	if(match != null) {
-		var year = parseInt(match[1]);
-		var month = parseInt(match[2]) - 1;
-		var day = parseInt(match[3]);
-		
-		var date = new Date(year, month, day);
-		var isValid = date.getFullYear() == year
-			&& date.getMonth() == month
-			&& date.getDate() == day;
-		
-		return isValid ? date : null;
+	if(val != null) {
+		var match = val.match(/^(\d{4})(?:[\-\/\.](\d{1,2})(?:[\-\/\.](\d{1,2}))?)?$/)
+		if(match != null) {
+			return {
+				year: parseInt(match[1]),
+				month: match[2] != null ? parseInt(match[2]) : null,
+				day: match[3] != null ? parseInt(match[3]) : null
+			};
+		}
 	}
-	return null;
+	return { year: null, month: null, day: null };
+}
+
+function parse_date_range(start, end) {
+	start = parse_date(start);
+	end = parse_date(end);
+	
+	if(start.year == null) {
+		var end = new Date();
+		return {
+			start: new Date(end.getFullYear(), end.getMonth(), end.getDate() - 30),
+			end: new Date(end.getFullYear(), end.getMonth(), end.getDate())
+		};
+	}
+	
+	if(start.month == null) {
+		start.month = 1;
+		start.day = 1;
+		
+		if(end.year == null) {
+			end.year = start.year;
+		}
+	} else if(start.day == null) {
+		start.day = 1;
+
+		if(end.year == null) {
+			end.year = start.year;
+			end.month = start.month;
+		}
+	} else {
+		if(end.year == null) {
+			end.year = start.year;
+			end.month = start.month;
+			end.day = start.day;
+		}
+	}
+
+	if(end.year != null) {
+		if(end.month == null) end.month = 12;
+		if(end.day == null) end.day = new Date(end.year, end.month, 0).getDate();
+	}
+	
+	return {
+		start: new Date(start.year, start.month - 1, start.day),
+		end: new Date(end.year, end.month - 1, end.day)
+	};
 }
 
 var export_formats = {
@@ -155,10 +197,9 @@ function list_accounts(args, auth) {
 }
 
 function retrieve_movements(account, args, auth) {
-	var endDate = args.endDate || new Date();
-	var startDate = args.startDate || new Date(endDate.getFullYear(), endDate.getMonth() - 1, endDate.getDate());
 	
-	api.get_movements(auth, account, startDate, endDate, chunk_retrieved, movements_retrieved);
+	var dateRange = parse_date_range(args.startDate, args.endDate);
+	api.get_movements(auth, account, dateRange.start, dateRange.end, chunk_retrieved, movements_retrieved);
 	
 	var movements = [];
 	

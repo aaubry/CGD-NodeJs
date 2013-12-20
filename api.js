@@ -61,8 +61,6 @@ function compare_dates(first, second) {
 		}
 	}
 	
-	console.log(first, second, diff);
-	
 	return diff;
 }
 
@@ -92,6 +90,9 @@ exports.authenticate = function(username, password, cb) {
 }
 
 exports.get_accounts = function(auth, cb) {
+	var pendingRequests = 2;
+	var accounts = [];
+	
 	console.warn("Requesting account list");
 	request({
 		url: baseUrl + "pg/l",
@@ -99,11 +100,18 @@ exports.get_accounts = function(auth, cb) {
 		jar: auth,
 		json: {}
 	}, handle_error(accounts_retrieved, cb));
-
+	
+	console.warn("Requesting card list");
+	request({
+		url: baseUrl + "c/dc",
+		headers: appHeaders,
+		jar: auth,
+		json: {}
+	}, handle_error(cards_retrieved, cb));
+	
 	function accounts_retrieved(response, body) {
 		console.warn("Account list retrieved");
 		
-		var accounts = [];
 		for(var name in body) {
 			body[name].forEach(function(e) {
 				e.ttl.forEach(function(l) {
@@ -119,11 +127,34 @@ exports.get_accounts = function(auth, cb) {
 			});
 		}
 		
-		cb(null, accounts);
+		if(--pendingRequests == 0) cb(null, accounts);
+	}
+
+	function cards_retrieved(response, body) {
+		console.warn("Card list retrieved");
+		
+		body.cl.forEach(function(c) {
+			accounts.push({
+				id: c.ccc,
+				name: c.dcc,
+				type: c.tc,
+				balance: null
+			});
+		});
+		
+		if(--pendingRequests == 0) cb(null, accounts);
 	}
 }
 
 exports.get_movements = function(auth, account, startDate, endDate, chunkCb, cb) {
+	if(/^PT /.test(account)) {
+		get_account_movements(auth, account, startDate, endDate, chunkCb, cb);
+	} else {
+		get_card_movements(auth, account, startDate, endDate, chunkCb, cb);
+	}	
+}
+
+function get_account_movements(auth, account, startDate, endDate, chunkCb, cb) {
 	console.warn("Requesting movements of account " + account + " between " + format_date(startDate, "") + "and " + format_date(endDate, ""));
 	
 	var query = {
@@ -247,3 +278,71 @@ exports.get_movements = function(auth, account, startDate, endDate, chunkCb, cb)
 		}
 	}
 }
+
+function get_card_movements(auth, account, startDate, endDate, chunkCb, cb) {
+	
+	var monthDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+	
+	retrieve_next_page();
+
+	function retrieve_next_page() {
+		console.warn("Requesting movements of card " + account + " for month " + format_date(monthDate).substr(0, 7));
+
+		request({
+			url: baseUrl + "c/mc/" + encodeURIComponent(account) + "/" + encodeURIComponent(format_date(monthDate, "00:00:00")),
+			headers: appHeaders,
+			jar: auth,
+			json: {}
+		}, handle_error(movements_retrieved, cb));
+	}
+	
+	function movements_retrieved(response, body) {
+		console.warn("Movement chunk retrieved");
+		
+		var movements = [];
+		
+		if(body.lmov.cl == null) {
+			console.error(body);
+			return cb("Unexpected response");
+		}
+		
+		body.lmov.cl.push({ mcl: body.lmov.movccl });
+		
+		body.lmov.cl.forEach(function(g) {
+			g.mcl.forEach(function(m) {
+				/*
+					{
+						"dt":"2013-04-16 00:00:00",
+						"cred":321,
+						"deb":null,
+						"pnp":null,
+						"numc":"",
+						"dtv":"2013-04-16 00:00:00",
+						"crtd":"10057469750 - EUR - Leve",
+						"movd":"CASHBACK PARA PPR CARTAO LEVE"
+					 }
+				*/
+				movements.push({
+					description: m.movd,
+					date: parse_date(m.dt),
+					value_date: parse_date(m.dtv),
+					number: null,
+					debit: m.deb != null ? parse_money(m.deb) : null,
+					credit: m.cred != null ? parse_money(m.cred) : null,
+					balance: null
+				});
+			});
+		});
+		
+		chunkCb(movements);
+		
+		monthDate = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 1);
+		if(compare_dates(monthDate, endDate) <= 0) {
+			retrieve_next_page();
+		} else {
+			console.warn("All movements have been retrieved");
+			cb(null);
+		}
+	}
+}
+
