@@ -24,6 +24,7 @@ program
 	.description("Retrieve movements")
 	.option("-s, --start-date <startDate>", "get movements starting from <startDate>")
 	.option("-e, --end-date <endDate>", "get movements starting from <endDate>")
+	.option("-g, --group", "group movements by month")
 	.action(authenticated(retrieve_movements));
 
 program.parse(process.argv);
@@ -92,7 +93,7 @@ function parse_date_range(start, end) {
 }
 
 var export_formats = {
-	tsv: function(val) {
+	tsv: function(val, fileName) {
 		var lines = [];
 		val.forEach(function(a) {
 			var line = [];
@@ -101,12 +102,12 @@ var export_formats = {
 			}
 			lines.push(line.join("\t"));
 		});
-		fs.writeFile(program.output, lines.join("\n"));
+		fs.writeFile(fileName, lines.join("\n"));
 	},
-	qif: function(val) {
+	qif: function(val, fileName) {
 		
 	},
-	ofx: function(val) {
+	ofx: function(val, fileName) {
 		var header = {
 			OFXHEADER: "100",
 			DATA: "OFXSGML",
@@ -138,13 +139,19 @@ var export_formats = {
 		};
 
 		var ofx_string = ofx.serialize(header, body);
-		fs.writeFile(program.output, ofx_string);		
+		fs.writeFile(fileName, ofx_string);		
 	}
 };
 
-function print_table(val) {
+function print_table(val, suffix) {
 	if(program.output) {
-		export_formats[program.format](val);
+		var fileName = program.output;
+		if(suffix != null) {
+			var fileNameMatch = /^(.*)\.(\w+)$/.exec(program.output);
+			fileName = [fileNameMatch[1], suffix, fileNameMatch[2]].join(".");
+		}
+			
+		export_formats[program.format](val, fileName);
 	} else {
 		var tbl = Table.printArray(val);
 		console.log(tbl.toString());
@@ -210,6 +217,24 @@ function retrieve_movements(account, args, auth) {
 	function movements_retrieved(err) {
 		if(err) return console.error("ERROR", err);
 		console.warn("Done");
-		print_table(movements);
+		
+		if(args.group && movements.length > 0) {
+			
+			var group = [];
+			var currentMonth = movements[0].date.substr(0, 7);
+			movements.push({ date: "XXXX-XX-XX" });
+			movements.forEach(function(m) {
+				var month = m.date.substr(0, 7);
+				if(month != currentMonth) {
+					print_table(group, currentMonth);
+					group = [];
+					currentMonth = month;
+				}
+				group.push(m);
+			});
+			
+		} else {
+			print_table(movements);
+		}
 	}
 }
