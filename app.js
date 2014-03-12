@@ -2,6 +2,7 @@ var program = require("commander");
 var prompt = require("prompt");
 var Table = require("easy-table");
 var api = require("./api");
+var keyring = require("./keyring");
 var fs = require("fs");
 var ofx = require("ofx");
 
@@ -11,6 +12,7 @@ program
 	.version("0.0.1")
 	.option("-v, --verbose", "print additional information to stderr")
 	.option("-u, --user <user>", "authenticate as <user>")
+	.option("-p, --save-password", "load / save password from keyring")
 	.option("-o, --output <outputFile>", "output data to <outputFile>")
 	.option("-f, --format <format>", "output data to <format> [tsv|ofx|qif]", "tsv");
 
@@ -167,32 +169,68 @@ function authenticated(action) {
 			console.warn = function() {}
 		}
 		
-		var fields = [];
 		if(program.user == null) {
-			fields.push({
-				name: "username",
-				required: true
-			});
+			prompt.get(
+				[{
+					name: "username",
+					required: true
+				}],
+				function(err, res) {
+					program.user = res.username;
+					username_available(err);
+				}
+			);
+		} else {
+			username_available(null);
 		}
 		
-		fields.push({
-			name: "password",
-			required: true,
-			hidden: true
-		});
-		
-		prompt.get(fields, function(err, res) {
+		function username_available(err) {
 			if(err) return console.error("ERROR", err);
+
+			if(program.savePassword) {
+				keyring.get_password("CGD", program.user, function(err, pass) {
+					if(err) return console.error("ERROR", err);
+					
+					if(pass != null) {
+						program.password = pass;
+						password_available(null);
+					} else {
+						prompt_password(function(err) {
+							if(err) return console.error("ERROR", err);
+							
+							keyring.set_password("CGD", program.user, program.password, password_available);
+						});
+					}
+				});
+			} else {
+				prompt_password(password_available);
+			}
+		}
 		
-			if(res.username) program.user = res.username;
+		function prompt_password(cb) {
+			prompt.get(
+				[{
+					name: "password",
+					required: true,
+					hidden: true
+				}],
+				function(err, res) {
+					program.password = res.password;
+					cb(err);
+				}
+			);
+		}
+		
+		function password_available(err) {
+			if(err) return console.error("ERROR", err);
 			
-			api.authenticate(res.username || program.user, res.password, function(err, auth) {
+			api.authenticate(program.user, program.password, function(err, auth) {
 				if(err) return console.error("ERROR", err);
 
 				args.push(auth);
 				action.apply(this, args);
 			});
-		});
+		}
 	}
 }
 
