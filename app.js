@@ -3,6 +3,7 @@ var prompt = require("prompt");
 var Table = require("easy-table");
 var api = require("./api");
 var keyring = require("./keyring");
+var date = require("./date");
 var fs = require("fs");
 var ofx = require("ofx");
 
@@ -35,65 +36,6 @@ if(program.args.length == 0) {
 	program.help();
 }
 
-function parse_date(val) {
-	if(val != null) {
-		var match = val.match(/^(\d{4})(?:[\-\/\.](\d{1,2})(?:[\-\/\.](\d{1,2}))?)?$/)
-		if(match != null) {
-			return {
-				year: parseInt(match[1]),
-				month: match[2] != null ? parseInt(match[2]) : null,
-				day: match[3] != null ? parseInt(match[3]) : null
-			};
-		}
-	}
-	return { year: null, month: null, day: null };
-}
-
-function parse_date_range(start, end) {
-	start = parse_date(start);
-	end = parse_date(end);
-	
-	if(start.year == null) {
-		var end = new Date();
-		return {
-			start: new Date(end.getFullYear(), end.getMonth(), end.getDate() - 30),
-			end: new Date(end.getFullYear(), end.getMonth(), end.getDate())
-		};
-	}
-	
-	if(start.month == null) {
-		start.month = 1;
-		start.day = 1;
-		
-		if(end.year == null) {
-			end.year = start.year;
-		}
-	} else if(start.day == null) {
-		start.day = 1;
-
-		if(end.year == null) {
-			end.year = start.year;
-			end.month = start.month;
-		}
-	} else {
-		if(end.year == null) {
-			end.year = start.year;
-			end.month = start.month;
-			end.day = start.day;
-		}
-	}
-
-	if(end.year != null) {
-		if(end.month == null) end.month = 12;
-		if(end.day == null) end.day = new Date(end.year, end.month, 0).getDate();
-	}
-	
-	return {
-		start: new Date(start.year, start.month - 1, start.day),
-		end: new Date(end.year, end.month - 1, end.day)
-	};
-}
-
 var export_formats = {
 	tsv: function(val, fileName) {
 		var lines = [];
@@ -107,10 +49,22 @@ var export_formats = {
 		fs.writeFile(fileName, lines.join("\n"));
 	},
 	qif: function(val, fileName) {
-		
+		var lines = ["!type:Bank"];
+		val.forEach(function(a) {
+			lines.push("D" + a.date);
+			if(a.debit != null) {
+				lines.push("T-" + a.debit);
+			} else {
+				lines.push("T" + a.credit);
+			}
+			lines.push("M" + a.description);
+			lines.push("N" + a.number);
+			lines.push("^");
+		});
+		fs.writeFile(fileName, lines.join("\n"));
 	},
 	ofx: function(val, fileName) {
-		var header = {
+		/*var header = {
 			OFXHEADER: "100",
 			DATA: "OFXSGML",
 			VERSION: "103",
@@ -142,6 +96,7 @@ var export_formats = {
 
 		var ofx_string = ofx.serialize(header, body);
 		fs.writeFile(fileName, ofx_string);		
+		*/ 
 	}
 };
 
@@ -243,7 +198,7 @@ function list_accounts(args, auth) {
 
 function retrieve_movements(account, args, auth) {
 	
-	var dateRange = parse_date_range(args.startDate, args.endDate);
+	var dateRange = date.parse_range(args.startDate, args.endDate);
 	api.get_movements(auth, account, dateRange.start, dateRange.end, chunk_retrieved, movements_retrieved);
 	
 	var movements = [];
