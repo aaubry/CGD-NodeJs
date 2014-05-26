@@ -215,7 +215,7 @@ function get_account_movements(auth, account, startDate, endDate, chunkCb, cb) {
 					date: parse_date(m.dt),
 					value_date: parse_date(m.dtpv),
 					number: m.nsd,
-					debit: null,
+					debit: "0,00",
 					credit: parse_money(m.mon),
 					balance: parse_money(m.saps)
 				});
@@ -228,7 +228,7 @@ function get_account_movements(auth, account, startDate, endDate, chunkCb, cb) {
 						value_date: parse_date(m.dtpv),
 						number: m.nsd,
 						debit: parse_money(m.mon),
-						credit: null,
+						credit: "0,00",
 						balance: parse_money(m.saps)
 					});
 				}
@@ -257,8 +257,8 @@ function get_account_movements(auth, account, startDate, endDate, chunkCb, cb) {
 					date: parse_date(m.dt),
 					value_date: parse_date(m.dtv),
 					number: m.nmv,
-					debit: m.tpm == "D" ? parse_money(m.mon) : null,
-					credit: m.tpm == "C" ? parse_money(m.mon) : null,
+					debit: m.tpm == "D" ? parse_money(m.mon) : "0,00",
+					credit: m.tpm == "C" ? parse_money(m.mon) : "0,00",
 					balance: parse_money(m.saps)
 				};
 			});
@@ -327,8 +327,8 @@ function get_card_movements(auth, account, startDate, endDate, chunkCb, cb) {
 					date: parse_date(m.dt),
 					value_date: parse_date(m.dtv),
 					number: null,
-					debit: m.deb != null ? parse_money(m.deb) : null,
-					credit: m.cred != null ? parse_money(m.cred) : null,
+					debit: m.deb != null ? parse_money(m.deb) : "0,00",
+					credit: m.cred != null ? parse_money(m.cred) : "0,00",
 					balance: null
 				});
 			});
